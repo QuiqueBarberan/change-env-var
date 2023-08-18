@@ -1,0 +1,31 @@
+name: Change environment variable
+description: 'Increment environment variable value by 1 '
+inputs:
+  environment:
+    description: 'Name of environment'
+    required: true
+  variable:
+    description: 'Name of environment variable'
+    required: true
+#outputs:
+#  random-number:
+#    description: "Random number"
+#    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  env:
+    GH_TOKEN: ${{ secrets.devops-api-repo-read }}
+  steps:
+    - name: Get Repo ID
+      run: |
+        echo REPO_ID=$(gh api -H "Accept: application/vnd.github+json" repos/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }} | jq .id) >> $GITHUB_ENV
+    - name: Get buildnumber
+      run: |
+        echo ${{ inputs.variable }}=$(gh api -H "Accept: application/vnd.github+json" repositories/${{ env.REPO_ID }}/environments/${{ inputs.environment }}/variables/${{ inputs.variable }} | jq .value) >> $GITHUB_ENV
+    - name: Update environment variable value
+      run: |
+        BUILD_NUMBER=${{ env.BUILD_NUMBER }}
+        BUILD_NUMBER=${BUILD_NUMBER//\"/}
+        BUILD_NUMBER=$((BUILD_NUMBER + 1))
+        echo $BUILD_NUMBER
+        gh api --method PATCH -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repositories/${{ env.REPO_ID }}/environments/dev/variables/BUILD_NUMBER -f name='BUILD_NUMBER' -f value=$BUILD_NUMBER
