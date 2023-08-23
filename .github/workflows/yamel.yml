@@ -14,11 +14,13 @@ jobs:
           uses: credfeto/action-yaml-format@v1.3.2
         - name: Add a random file
           id: randomfile
-          run: ls -la > /tmp/mifichero-$(date +%Y%m%d%H%M).test
+          run: ls -la > lsla-$(date +%Y%m%d%H%M).txt
+        - name: Place pwd
+          id: pwd
+          run: pwd > pwd-$(date +%Y%m%d%H%M).txt
         - name: Pick changed files
           id: changed
           uses: hellofresh/action-changed-files@v3
-
         - name: Check values
           id: cheking
           run: echo ${{ steps.changed.outputs.matrix }}
