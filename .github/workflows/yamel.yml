@@ -1,7 +1,6 @@
 name: Take last changed files
 on:
-  schedule:
-    - cron: "0 * * * *"
+  push:
 
 jobs:
   TerraformFMT:
