@@ -1,38 +1,26 @@
 name: Take last changed files
-
-run-name: ${{ github.event.name }} by ${{ github.author }}
+run-name: ${{ github.workflow }} by @${{ github.actor }}
 
 on:
-
   push:
 
 jobs:
-
   TerraformFMT:
-  
     runs-on: ubuntu-latest
-    
     permissions: write-all
-    
     steps:
-    
         - uses: actions/checkout@v3
-        
         - name: Reformat YAML Files
-        
           uses: credfeto/action-yaml-format@v1.3.2
-          
-
+        - name: Add a random file
+          id: randomfile
+          run: ls -la > /tmp/mifichero-$(date +%Y%m%d%H%M).test
         - name: Pick changed files
-        
           id: changed
-          
           uses: hellofresh/action-changed-files@v3
 
-        - name: Pick changed files
-        
-          id: bkljadsfg
-          
+        - name: Check values
+          id: cheking
           run: echo ${{ steps.changed.outputs.matrix }}
         
 
