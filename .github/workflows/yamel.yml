@@ -22,6 +22,9 @@ jobs:
         - name: Check values
           id: cheking
           run: echo ${{ steps.changed.outputs.matrix }}
+        - name: Git Status
+          id: gitstatus
+          run: git status
         
 
         - name: Create Pull Request
