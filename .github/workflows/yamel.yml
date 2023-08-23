@@ -16,7 +16,7 @@ jobs:
           uses: hellofresh/action-changed-files@v3
 
         - name: Create Pull Request
-          uses: peter-evans/create-pull-request@v4
+          uses: peter-evans/create-pull-request@latest
           with:
             commit-message: Cloud - Update terraform format
             title: Cloud - Update terraform format
